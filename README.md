@@ -15,15 +15,5 @@ curl localhost:3000/healthcheck
 
 結果
 ```
-Hello World!
+Hello World! CloudNative Days CI/CD HandsOn'
 ```
-
-
-## 事前準備
-
-```
-choco install -y nodist
-nodist -v
-npm install express --save
-```
-
