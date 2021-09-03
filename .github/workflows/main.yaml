@@ -7,10 +7,10 @@ on:
     branches:
        - main
        - dev
-    paths-ignore:
-      - ".github/**"
-      - ".gitignore"
-      - "README.md"
+    # paths-ignore:
+    #   - ".github/**"
+    #   - ".gitignore"
+    #   - "README.md"
     paths:
       - "index.js"
       - "Dockerfile"
