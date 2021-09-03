@@ -64,40 +64,13 @@ jobs: # 日本語はダメ
       - name: スクリプト1
         id: aaaa
         run: echo ${{ steps.env-dev.outputs.TEST_ENV }}
+      - name: Debug
+        if: ${{ always() }}
+        uses: mxschmitt/action-tmate@v3
       
       - name: AWS ECRにログイン
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-
-      - name: file create
-        run: |
-          echo "aaa" > sample.txt
-          cat sample.txt
-
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: txt
-          path: |
-            sample.txt
-
-      - name: file delete
-        run: |
-          ls -al
-          rm sample.txt
-          ls -al
-
-      - name: Download a single artifact
-        uses: actions/download-artifact@v2
-        # with:
-        #   name: txt
-
-      - name: file check
-        run: |
-          ls -al 
-          ls -al txt
-          cat txt/sample.txt
-        
 
       # - name: ビルド後ECRにPush
       #   id: build-image
@@ -114,3 +87,34 @@ jobs: # 日本語はダメ
       #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
       #     echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      # キャッシュの保存を検証
+      - name: ファイルの作成
+        run: |
+          echo "aaa" > sample.txt
+          cat sample.txt
+
+      - name: artifactに保存（txt/sample.txt）
+        uses: actions/upload-artifact@v2
+        with:
+          name: txt
+          path: |
+            sample.txt
+
+      - name: ローカルファイルの削除
+        run: |
+          ls -al
+          rm sample.txt
+          ls -al
+
+      - name: アーティファクトのダウンロード（まとめて）
+        uses: actions/download-artifact@v2
+        # with:
+        #   name: txt
+
+      - name: ファイルの確認
+        run: |
+          ls -al 
+          ls -al txt
+          cat txt/sample.txt
+        
