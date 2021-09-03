@@ -11,6 +11,7 @@ on:
     #   - ".github/**"
     #   - ".gitignore"
     #   - "README.md"
+    # paths-ignore pathsはどちらか
     paths:
       - "index.js"
       - "Dockerfile"
@@ -67,6 +68,35 @@ jobs: # 日本語はダメ
       - name: AWS ECRにログイン
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+
+      - name: file create
+        run: |
+          echo "aaa" > sample.txt
+          cat sample.txt
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: txt
+          path: |
+            sample.txt
+
+      - name: file delete
+        run: |
+          ls -al
+          rm sample.txt
+          ls -al
+
+      - name: Download a single artifact
+        uses: actions/download-artifact@v2
+        # with:
+        #   name: txt
+
+      - name: file check
+        run: |
+          ls -al
+          cat sample.txt
+        
 
       # - name: ビルド後ECRにPush
       #   id: build-image
