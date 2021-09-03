@@ -5,10 +5,10 @@ on:
 #   実行のトリガーとなるアクション（push,pr）のmainブランチで実行
   push:
     branches: [ dev ]
+    paths-ignore:
+      - ".github/**"
   pull_request:
     branches: [ dev ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 # 結局ECRへのログイン時regionを指定しないとエラーが出る
 # Error: Missing region in config
@@ -17,36 +17,31 @@ on:
 #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
 #   AWS_DEFAULT_REGION: ap-northeast-1
 
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs: # 日本語はダメ
-  build:
-    # The type of runner that the job will run on
+  build-and-deploy:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: aws dev
+        # 環境変数に追加される
+        # secretsはGitHubのSettings⇒Secrets⇒ripository Secretから設定可能
+      - name: aws configure の設定 dev環境
         if: github.ref == 'refs/heads/dev'
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
-      - name: env
+      - name: 環境ごとの変数　dev環境
         if: github.ref == 'refs/heads/dev'
         id: env-dev
         run: echo '::set-output name=TEST_ENV::100'
-        with:
-          sample-key: aaaa
-      - name: aws prod
+      - name: aws configure の設定 dev環境
         if: github.ref == 'refs/heads/main'
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
-      - name: env
+      - name: 環境ごとの変数　prod環境
         if: github.ref == 'refs/heads/main'
         id: env-prod
         run: echo '::set-output name=TEST_ENV::100'
@@ -54,25 +49,17 @@ jobs: # 日本語はダメ
       # actions/checkout@v2はここ（https://github.com/actions/checkout）
       - name: Checkout
         uses: actions/checkout@v2
-        # 環境変数に追加される
-        # secretsはGitHubのSettings⇒Secrets⇒ripository Secretから設定可能
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: ap-northeast-1
-
+        
       # id⇒参照時に利用　name⇒表示目的
-      - name: スクリプト1 # 日本語OK
+      - name: スクリプト1
         id: aaaa
         run: echo ${{ steps.env-dev.outputs.TEST_ENV }}
       
-      - name: Login to Amazon ECR
+      - name: AWS ECRにログイン
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      # - name: Build, tag, and push image to Amazon ECR
+      # - name: ビルド後ECRにPush
       #   id: build-image
       #   env:
       #     DOCKER_BUILDKIT: 1
