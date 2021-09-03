@@ -58,7 +58,7 @@ jobs: # 日本語はダメ
       # id⇒参照時に利用　name⇒表示目的
       - name: スクリプト1 # 日本語OK
         id: aaaa
-        run: echo TEST_ENV
+        run: echo $TEST_ENV
       
       - name: Login to Amazon ECR
         id: login-ecr
