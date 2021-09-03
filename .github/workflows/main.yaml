@@ -4,11 +4,20 @@ name: github-actions-first
 on:
 #   実行のトリガーとなるアクション（push,pr）のmainブランチで実行
   push:
-    branches: [ dev ]
+    branches:
+       - main
+       - dev
     paths-ignore:
       - ".github/**"
-  pull_request:
-    branches: [ dev ]
+      - ".gitignore"
+      - "README.md"
+    paths:
+      - "index.js"
+      - "Dockerfile"
+  # pull_request:
+  #   branches:
+  #     - dev
+  #     - main
   workflow_dispatch:
 # 結局ECRへのログイン時regionを指定しないとエラーが出る
 # Error: Missing region in config
