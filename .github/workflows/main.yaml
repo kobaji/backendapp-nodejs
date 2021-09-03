@@ -25,6 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         # 環境変数に追加される
+        # secretsはGitHubのSettings⇒Secrets⇒ripository Secretから設定可能
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -32,13 +33,30 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
 
-      # Runs a single command using the runners shell　（日本語OK）
-      - name: スクリプト1
+      # Runs a single command using the runners shell
+      # id⇒参照時に利用　name⇒表示目的
+      - name: スクリプト1 # 日本語OK
         id: aaaa
         run: aws s3 ls
-      - name: file-search
-        id: bbb
+      
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          DOCKER_BUILDKIT: 1  # これ大事
+          ECR_REGISTRY: 831318551697.dkr.ecr.ap-northeast-1.amazonaws.com  # TODO: 要変更
+          ECR_REPOSITORY: kenta-dev
+          IMAGE_TAG: ${{ github.sha }}
         run: |
-          ls -al
-          ls -al /
-          pwd
+          # latest と github.sha でタグをふる場合
+          docker build \
+              --cache-from=$ECR_REGISTRY/$ECR_REPOSITORY:latest --build-arg BUILDKIT_INLINE_CACHE=1 \
+              -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+s
+   
