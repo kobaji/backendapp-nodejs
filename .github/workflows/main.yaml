@@ -58,24 +58,24 @@ jobs: # 日本語はダメ
       # id⇒参照時に利用　name⇒表示目的
       - name: スクリプト1 # 日本語OK
         id: aaaa
-        run: aws s3 ls
+        run: echo TEST_ENV
       
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          DOCKER_BUILDKIT: 1
-          ECR_REGISTRY: 831318551697.dkr.ecr.ap-northeast-1.amazonaws.com
-          ECR_REPOSITORY: kenta-dev
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          # latest と github.sha でタグをふる場合
-          docker build \
-              --cache-from=$ECR_REGISTRY/$ECR_REPOSITORY:latest --build-arg BUILDKIT_INLINE_CACHE=1 \
-              -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+      # - name: Build, tag, and push image to Amazon ECR
+      #   id: build-image
+      #   env:
+      #     DOCKER_BUILDKIT: 1
+      #     ECR_REGISTRY: 831318551697.dkr.ecr.ap-northeast-1.amazonaws.com
+      #     ECR_REPOSITORY: kenta-dev
+      #     IMAGE_TAG: ${{ github.sha }}
+      #   run: |
+      #     # latest と github.sha でタグをふる場合
+      #     docker build \
+      #         --cache-from=$ECR_REGISTRY/$ECR_REPOSITORY:latest --build-arg BUILDKIT_INLINE_CACHE=1 \
+      #         -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+      #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+      #     echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
