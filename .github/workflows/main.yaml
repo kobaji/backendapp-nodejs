@@ -37,6 +37,8 @@ jobs: # 日本語はダメ
         if: github.ref == 'refs/heads/dev'
         id: env-dev
         run: echo '::set-output name=TEST_ENV::100'
+        with:
+          sample-key: aaaa
       - name: aws prod
         if: github.ref == 'refs/heads/main'
         uses: aws-actions/configure-aws-credentials@v1
