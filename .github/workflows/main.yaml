@@ -10,15 +10,34 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }} 
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
-  AWS_DEFAULT_REGION: ap-northeast-1
+# 結局ECRへのログイン時regionを指定しないとエラーが出る
+# Error: Missing region in config
+# env:
+#   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }} 
+#   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+#   AWS_DEFAULT_REGION: ap-northeast-1
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # 実行される処理の単位（日本語はダメ）
+jobs: # 日本語はダメ
+  env-setting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: aws dev
+        if: ${{ github.ref == "dev" }}
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+      - name: aws dev
+        if: ${{ github.ref == "main" }}
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -38,7 +57,6 @@ jobs:
       #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       #     aws-region: ap-northeast-1
 
-      # Runs a single command using the runners shell
       # id⇒参照時に利用　name⇒表示目的
       - name: スクリプト1 # 日本語OK
         id: aaaa
