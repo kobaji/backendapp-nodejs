@@ -34,7 +34,7 @@ jobs: # 日本語はダメ
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
         env:
-          aaaa: aaa
+          TEST_ENV: 100
       - name: aws prod
         if: github.ref == 'refs/heads/main'
         uses: aws-actions/configure-aws-credentials@v1
