@@ -119,7 +119,6 @@ jobs: # 日本語はダメ
           ls -al 
           ls -al txt
           cat txt/sample.txt
-    steps:
     # repository-dispatchを使って、マニフェストリポジトリに対して通知
     # その際に、Dockerイメージにタグつけしたコミットハッシュを合わせて送信
       - name: dispatch update-manifests
