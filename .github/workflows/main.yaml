@@ -12,9 +12,9 @@ on:
     #   - ".gitignore"
     #   - "README.md"
     # paths-ignore pathsはどちらか
-    paths:
-      - "index.js"
-      - "Dockerfile"
+    # paths:
+    #   - "index.js"
+    #   - "Dockerfile"
   # pull_request:
   #   branches:
   #     - dev
