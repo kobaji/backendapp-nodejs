@@ -17,7 +17,7 @@ jobs:
       # 上の処理が失敗した時だけ Slack 通知する
       - name: 成功時にSlackへ通知する
         id: slack-success
-        run: curl -X POST -H 'Content-type:application/json' --data '{"text":"Hello, World!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: curl -X POST -H 'Content-type:application/json' --data '{ "attachments":[{"fallback":"fallback Test","pretext":"att *achm* ents _Test_ <!here> <https://www.jbcchd.co.jp/|This is jbcchd link>","color":"#D00000","fields":[{"title":"attachment01","value":"This is attachment"}]}]}   ' ${{ secrets.SLACK_WEBHOOK_URL }}
         # if: success()
         # with:
         #   # payload: "{\"attachments\":[{\"fallback\":\"fallback Test\",\"pretext\":\"att\",\"color\":\"#D00000\"}]}"
