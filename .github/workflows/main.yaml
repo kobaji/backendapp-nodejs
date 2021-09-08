@@ -23,13 +23,26 @@ jobs:
             "attachments":[
             {
               "fallback":"fallback Test",
-              "pretext":"att *achm* ents _Test_ <!here> <https://www.jbcchd.co.jp/|This is jbcchd link>",
-              "color":"#D00000",
+              "pretext":"<!here> *【成功】アプリケーション　デプロイ完了のお知らせ* ContainerRegistory,Manifestの更新が完了しました。<https://www.jbcchd.co.jp/|ログの確認はこちらから>",
+              "color":"#00FF00",
               "fields":[
               {
-                "title":"attachment01",
-                "value":"This is attachment"
-              }]
+                "title":"プロジェクト名",
+                "value":"AAAAプロジェクト"
+              },
+              {
+                "title":"gitリビジョン",
+                "value":"XXXXXXXXXXXXXXXXXXXX"
+              },
+              {
+                "title":"ブランチ名",
+                "value":"main"
+              },
+              {
+                "title":"コミッター",
+                "value":"BBBBBBBB"
+              },
+              ]
             }]
           }   ' ${{ secrets.SLACK_WEBHOOK_URL }}
         # if: success()
