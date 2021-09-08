@@ -21,9 +21,7 @@ jobs:
         if: success()
         with:
           payload: |
-            "{ \
-            \"text\":\"Hello GitHub-Actions\" \
-            }"
+            "{\"text\":\"Hello GitHub-Actions\"}"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       # - name: 成功時にSlackへ通知する
