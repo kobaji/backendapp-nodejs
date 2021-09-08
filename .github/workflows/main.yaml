@@ -33,9 +33,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       # # 任意の処理を行う
-      - name: Run Script
-        id  : run-script
-        run : node ./index.js
+      # - name: Run Script
+      #   id  : run-script
+      #   run : node ./index.js
       # 上の処理が失敗した時だけ Slack 通知する
       - name: Send GitHub Action trigger data to Slack workflow
         id: slack
