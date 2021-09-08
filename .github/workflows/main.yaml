@@ -40,7 +40,7 @@ jobs:
       - name: 成功時にSlackへ通知する
         id: slack
         uses: slackapi/slack-github-action@v1.14.0
-        if  : success()
+        if: success()
         with:
           payload: '{
             \"text\":\"Hello GitHub-Actions\"
@@ -50,7 +50,7 @@ jobs:
       - name: 成功時にSlackへ通知する
         id: slack
         uses: slackapi/slack-github-action@v1.14.0
-        if  : failure()
+        if: failure()
         with:
           payload: "{\"text\":\"処理が失敗しました。\"}"
         env:
