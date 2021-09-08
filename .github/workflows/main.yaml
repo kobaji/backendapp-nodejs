@@ -1,5 +1,5 @@
 # GitHub Actionsの名前
-name: github-actions-first
+name: github-actions-firstあああ
 
 on:
 #   実行のトリガーとなるアクション（push,pr）のmainブランチで実行
