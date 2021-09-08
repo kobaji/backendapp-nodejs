@@ -20,13 +20,17 @@ jobs:
         run: |
           curl -X POST -H 'Content-type:application/json' \
           --data-raw '{
-          "attachments":[
-          {
-          "fallback":"fallback Test",
-          "pretext":"att *achm* ents _Test_ <!here> <https://www.jbcchd.co.jp/|This is jbcchd link>",
-          "color":"#D00000"
-          }
-          ]
+            "attachments":[
+            {
+              "fallback":"fallback Test",
+              "pretext":"att *achm* ents _Test_ <!here> <https://www.jbcchd.co.jp/|This is jbcchd link>",
+              "color":"#D00000",
+              "fields":[
+              {
+                "title":"attachment01",
+                "value":"This is attachment"
+              }]
+            }]
           }   ' ${{ secrets.SLACK_WEBHOOK_URL }}
         # if: success()
         # with:
