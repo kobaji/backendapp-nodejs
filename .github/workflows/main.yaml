@@ -1,8 +1,8 @@
 # GitHub Actionsの名前
-name: github-actions-firstあああ
+name: GitHubActionsの検証用フロー
 
 on:
-#   実行のトリガーとなるアクション（push,pr）のmainブランチで実行
+# 実行のトリガーとなるアクション（push,pr）のmainブランチで実行
   push:
     branches:
        - main
@@ -12,9 +12,9 @@ on:
     #   - ".gitignore"
     #   - "README.md"
     # paths-ignore pathsはどちらか
-    # paths:
-    #   - "index.js"
-    #   - "Dockerfile"
+    paths:
+      - "index.js"
+      - "Dockerfile"
   # pull_request:
   #   branches:
   #     - dev
@@ -31,13 +31,16 @@ jobs: # 日本語はダメ
   analyze:
     name: Code Scan
     runs-on: ubuntu-latest
+    # GitHub_Tokenの権限を変更が可能
     permissions:
       actions: read
       contents: read
       security-events: write
 
+    # 変数として扱える（使用した値をすべて実行する　例：nodeの10,12はすべて確認するなど）
     strategy:
       fail-fast: false
+      # trueの場合いずれかのmatrixジョブが失敗した場合にGitHubは進行中のジョブをすべてキャンセルします。
       matrix:
         language: [ 'javascript' ]
 
@@ -55,7 +58,9 @@ jobs: # 日本語はダメ
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
+
   build-and-deploy:
+    # analyzeの処理が終了したら実行する
     needs: analyze
     runs-on: ubuntu-latest
     steps:
