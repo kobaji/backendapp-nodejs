@@ -17,14 +17,14 @@ jobs:
       # 上の処理が失敗した時だけ Slack 通知する
       - name: 成功時にSlackへ通知する
         id: slack-success
-        uses: slackapi/slack-github-action@v1.14.0
-        if: success()
-        with:
-          # payload: "{\"attachments\":[{\"fallback\":\"fallback Test\",\"pretext\":\"att\",\"color\":\"#D00000\"}]}"
-          payload: |
-            "{\"text\":\"処理が失敗しました。\"}"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: curl "https:/www.google.com"
+        # if: success()
+        # with:
+        #   # payload: "{\"attachments\":[{\"fallback\":\"fallback Test\",\"pretext\":\"att\",\"color\":\"#D00000\"}]}"
+        #   payload: |
+        #     "{\"text\":\"処理が失敗しました。\"}"
+        # env:
+        #   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       # - name: 成功時にSlackへ通知する
       #   id: slack-failure
       #   uses: slackapi/slack-github-action@v1.14.0
