@@ -20,8 +20,7 @@ jobs:
         uses: slackapi/slack-github-action@v1.14.0
         if: success()
         with:
-          # payload: "{\"text\":\"Hello GitHub-Actions\"}"
-          slack-message: 'posting from a github action!'
+          payload: "{ "\attachments"\:[{"\fallback"\:"\fallback Test"\,"\pretext"\:"\att *achm* ents _Test_ <!here> <https://www.jbcchd.co.jp/|This is jbcchd link>"\,"\color"\:"\#D00000"\,"\fields"\:[{"\title"\:"\attachment01"\,"\value"\:"\This is attachment"\}]}]}"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       # - name: 成功時にSlackへ通知する
