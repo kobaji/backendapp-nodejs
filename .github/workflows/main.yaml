@@ -1,31 +1,9 @@
-# GitHub Actionsの名前
 name: GitHubActionsの検証用フロー
-
 on:
-# 実行のトリガーとなるアクション（push,pr）のmainブランチで実行
   push:
     branches:
        - github-action-外部通信
-    # paths-ignore:
-    #   - ".github/**"
-    #   - ".gitignore"
-    #   - "README.md"
-    # paths-ignore pathsはどちらか
-    # paths:
-    #   - "index.js"
-    #   - "Dockerfile"
-  # pull_request:
-  #   branches:
-  #     - dev
-  #     - main
   workflow_dispatch:
-# 結局ECRへのログイン時regionを指定しないとエラーが出る
-# Error: Missing region in config
-# env:
-#   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }} 
-#   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
-#   AWS_DEFAULT_REGION: ap-northeast-1
-
 jobs:
   my-cron-job:
     runs-on: ubuntu-latest
@@ -47,11 +25,11 @@ jobs:
             }'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      - name: 成功時にSlackへ通知する
-        id: slack
-        uses: slackapi/slack-github-action@v1.14.0
-        if: failure()
-        with:
-          payload: "{\"text\":\"処理が失敗しました。\"}"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      # - name: 成功時にSlackへ通知する
+      #   id: slack
+      #   uses: slackapi/slack-github-action@v1.14.0
+      #   if: failure()
+      #   with:
+      #     payload: "{\"text\":\"処理が失敗しました。\"}"
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
